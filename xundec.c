@@ -5,6 +5,9 @@
 
 #define _MOTIF_WM_HINTS_SIZE 5
 
+#define _NET_WM_STATE_REMOVE 0
+#define _NET_WM_STATE_ADD 1
+
 struct hints_t {
 	unsigned long flags;
 	unsigned long functions;
@@ -41,6 +44,26 @@ Window get_active_window(Display *display) {
 	return * (Window *) data;
 }
 
+void maximize_window(Display *display, Window window) {
+    Window root = RootWindow(display, DefaultScreen(display));
+    
+    Atom _NET_WM_STATE = XInternAtom(display, "_NET_WM_STATE", false);
+    Atom _NET_WM_STATE_MAX_H = XInternAtom(display, "_NET_WM_STATE_MAXIMIZED_HORZ", false);
+    Atom _NET_WM_STATE_MAX_V = XInternAtom(display, "_NET_WM_STATE_MAXIMIZED_VERT", false);
+
+    XClientMessageEvent event;
+    event.type = ClientMessage;
+    event.display = display;
+    event.window = window;
+    event.format = 32;
+    event.data.l[0] = _NET_WM_STATE;
+    event.data.l[1] = _NET_WM_STATE_MAX_H;
+    event.data.l[2] = _NET_WM_STATE_MAX_V;
+    event.data.l[3] = 2; /* _NET_WM_STATE_ADD; */
+
+    XSendEvent(display, root, false, SubstructuredRedirectMask | SubstructuredNotifyMask, (XEvent *) &event);
+
+}
 
 void check_decorations(Display *display, Window window) {
 	struct hints_t *hints = (struct hints_t *) malloc(sizeof(struct hints_t));
@@ -101,6 +124,8 @@ int main(int argc, char **argv) {
 			PropModeReplace, 
 			(unsigned char *) &hints, 
 			_MOTIF_WM_HINTS_SIZE);
+
+    maximize_window(display, active_window);
 
 	XFlush(display);
 }
