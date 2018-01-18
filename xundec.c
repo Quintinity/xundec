@@ -100,7 +100,7 @@ int main(int argc, char **argv) {
 
 	Window active_window = get_active_window(display);
 	set_decorations(display, active_window, decorations);
-    maximize_window(display, active_window);
+	maximize_window(display, active_window);
 
 	XFlush(display);
 
