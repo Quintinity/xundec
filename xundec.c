@@ -4,10 +4,8 @@
 #include <X11/Xlib.h>
 
 #define _MOTIF_WM_HINTS_SIZE 5
-
 #define _NET_WM_STATE_REMOVE 0
 #define _NET_WM_STATE_ADD 1
-
 #define SOURCE_INDICATOR_NORMAL 1
 
 struct hints_t {
@@ -35,8 +33,8 @@ Window get_active_window(Display *display) {
 			~0, 
 			false, 
 			AnyPropertyType, 
-			&value, &format, &n, &extra, // ignored 
-			&data); // window ID
+			&value, &format, &n, &extra,
+			&data);
 
 	return * (Window *) data;
 }
@@ -91,9 +89,6 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	Window active_window = get_active_window(display);
-	printf("%#010x\n", (unsigned long) active_window);
-
 	int decorations = 0;
 	if (argc == 2) {
 		decorations = atoi(argv[1]);
@@ -103,10 +98,12 @@ int main(int argc, char **argv) {
 		}
 	}
 
+	Window active_window = get_active_window(display);
 	set_decorations(display, active_window, decorations);
     maximize_window(display, active_window);
 
 	XFlush(display);
-}
 
+	return 0;
+}
 
