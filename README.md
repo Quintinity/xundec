@@ -4,8 +4,11 @@ Command line tool for decorating and undecorating X11 windows.
 ### Usage
 Remove decorations and maximize current window
 
-```xundec```
-
+```no-highlight
+xundec
+```
 Restore decorations and maximize current window
 
-```xundec 1```
+```no-highlight
+xundec 1
+```
