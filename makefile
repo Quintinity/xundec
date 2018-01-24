@@ -1,4 +1,4 @@
-CFLAGS := -Wall -Wextra -pedantic -std=c99
+CFLAGS := -Wall -Wextra -pedantic -std=gnu99
 LIBS := $(shell pkg-config --cflags --libs x11)
 
 all: xundec

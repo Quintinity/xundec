@@ -1,7 +1,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <X11/Xlib.h>
+
+#define US_PER_MS 1000
 
 #define _MOTIF_WM_HINTS_SIZE 5
 #define _NET_WM_STATE_REMOVE 0
@@ -100,8 +103,11 @@ int main(int argc, char **argv) {
 
 	Window active_window = get_active_window(display);
 	set_decorations(display, active_window, decorations);
-	maximize_window(display, active_window);
+	XFlush(display);
 
+	usleep(50 * US_PER_MS);
+
+	maximize_window(display, active_window);
 	XFlush(display);
 
 	return 0;
